@@ -3,18 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Festa Junina 🌽🔥</title>
     <link rel="stylesheet" href="style.css">
-    <title>Você decide o futuro da IA</title>
 </head>
 <body>
+
+    <!-- Bandeirinhas decorativas -->
+    <div class="bandeirinhas">
+        <div class="bandeira b1"></div>
+        <div class="bandeira b2"></div>
+        <div class="bandeira b3"></div>
+        <div class="bandeira b4"></div>
+        <div class="bandeira b5"></div>
+        <div class="bandeira b6"></div>
+    </div>
+
     <div class="caixa-principal">
-        <h1>Você decide o futuro da IA</h1>
-        <div class="caixa-perguntas"></div>
-        <div class="caixa-alternativas"></div>
-        <div class="caixa-resultado">
+        <h1>Quiz de Festa Junina 🌽🔥</h1>
+
+        <!-- Tela Inicial (com o botão Iniciar) -->
+        <div class="caixa-inicio">
+            <p>Aperte o cinto, ajeite o chapéu de palha e teste seus conhecimentos sobre as tradições juninas!</p>
+            <button class="btn-acao" id="btn-iniciar">Iniciar Quiz 🌽</button>
+        </div>
+
+        <!-- Conteúdo das Perguntas (Inicia escondido) -->
+        <div class="caixa-conteudo-quiz esconder">
+            <div class="contador-perguntas" id="contador">Pergunta 1 de 5</div>
+            <div class="caixa-perguntas"></div>
+            <div class="caixa-alternativas"></div>
+        </div>
+
+        <!-- Tela de Resultado (Inicia escondido) -->
+        <div class="caixa-resultado esconder">
+            <h2>Fim do Quiz! 🎉</h2>
             <p class="texto-resultado"></p>
+            <button class="btn-acao" id="btn-reiniciar">Jogar Novamente 🔄</button>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>

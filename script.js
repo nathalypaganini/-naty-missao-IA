@@ -1,117 +1,116 @@
-const caixaPrincipal = document.querySelector(".caixa-principal");
-const caixaPerguntas = document.querySelector(".caixa-perguntas");
-const caixaAlternativas = document.querySelector(".caixa-alternativas");
-const caixaResultado = document.querySelector(".caixa-resultado");
-const textoResultado = document.querySelector(".texto-resultado");
-
+// Lista de perguntas do Quiz Junino
 const perguntas = [
     {
-        enunciado: "Assim que saiu da escola você se depara com uma nova tecnologia, um chat que consegue responder todas as dúvidas que uma pessoa pode ter, ele também gera imagens e áudios hiper-realistas. Qual o primeiro pensamento?",
-        alternativas: [
-            {
-                texto: "Isso é assustador!",
-                afirmacao: "afirmacao"
-            },
-            {
-                texto: "Isso é maravilhoso!",
-                afirmacao: "afirmacao"
-            }           
-            
-        ]
+        pergunta: "Qual é a bebida quente típica feita com gengibre, cravos, canela e cachaça ou vinho?",
+        alternativas: ["Quentão", "Chocolate Quente", "Suco de Milho", "Chá de Capim-Santo"],
+        correta: 0
     },
     {
-        enunciado: "Com a descoberta desta tecnologia, chamada Inteligência Artificial (IA), uma professora de tecnologia da escola decidiu fazer uma sequência de aulas sobre elaIA. No fim de uma aula ela pede que você escreva um trabalho sobre o uso de tecnologia em sala de aula. Qual atitude você toma?",
-        alternativas: [
-            {
-                texto:"Utilizar uma ferramenta de busca na internet que utiliza IA para que ela ajude a encontrar informações relevantes para o trabalho e explique numa linguagem que facilite o entendimento",
-                afirmacao:"afirmacao"
-            },
-            {
-                texto: "Escrever o trabalho com base nas conversas que teve com colegas, algumas pesquisas na internet e conhecimentos próprios sobre o tema.",
-                afirmacao:"afirmacao"
-            }
-        ]
+        pergunta: "Qual dança tradicional de origem francesa é indispensável na Festa Junina?",
+        alternativas: ["Samba de Roda", "Quadrilha", "Frevo", "Forró Pé de Serra"],
+        correta: 1
     },
     {
-        enunciado: "Após a elaboração do trabalho, a professora realizou um debate entre a turma para entender como foi realizada a pesquisa e escrita. Nessa conversa também foi levantado um ponto muito importante: como a IA impacta o trabalho do futuro. Nesse debate, como você se posiciona?",
-        alternativas: [
-            {
-                texto:"Me preocupo com as pessoas que perderão seus empregos para máquinas e defendem a importância de proteger os trabalhadores.",
-                afirmacao:"afirmacao"
-            },
-            {
-                texto:"Defende a ideia de que a IA pode criar novas oportunidades de emprego e melhorar habilidades humanas.",
-                afirmacao:"afirmacao"
-            }
-            
-        ]
+        pergunta: "Qual destes santos NÃO é comemorado nas festas juninas de junho?",
+        alternativas: ["Santo Antônio", "São João", "São Pedro", "São Nicolau"],
+        correta: 3
     },
     {
-        enunciado: "Ao final da discussão, você precisou criar uma imagem no computador que representasse o que pensa sobre IA. E agora?",
-        alternativas: [
-            {
-                texto:"Criar uma imagem utilizando uma plataforma de design como o Paint.",
-                afirmacao:"afirmacao"
-            },
-            {
-                texto:"Criar uma imagem utilizando um gerador de imagem de IA.",
-                afirmacao:"afirmacao"
-            }
-            
-        ]
+        pergunta: "Qual é a brincadeira onde as pessoas usam uma vara com anzol para pegar peixes de plástico?",
+        alternativas: ["Jogo das Argolas", "Boca do Palhaço", "Pescaria", "Correio Elegante"],
+        correta: 2
     },
     {
-        enunciado: " Você tem um trabalho em grupo de biologia para entregar na semana seguinte, o andamento do trabalho está um pouco atrasado e uma pessoa do seu grupo decidiu fazer com ajuda de uma IA. O problema é que o trabalho está totalmente igual ao do chat. O que você faz?",
-        alternativas: [
-            {
-                texto: "O chat pode ser uma tecnologia muito avançada, mas é preciso manter a atenção pois toda máquina erra, por isso revisar o trabalho e contribuir com as perspectivas pessoais é essencial.",
-                afirmacao:"afirmacao"
-            },
-            {
-                texto: "Escrever comandos para o chat é uma forma de contribuir com o trabalho, por isso não é um problema utilizar o texto inteiro.",
-                afirmacao:"afirmacao"
-            }
-            
-            
-        ]
-    },
+        pergunta: "Qual ingrediente principal é usado na produção do bolo de pamonha, canjica e pipoca?",
+        alternativas: ["Trigo", "Milho", "Mandioca", "Arroz"],
+        correta: 1
+    }
 ];
 
-let atual = 0; 
-let perguntaAtual;
-let historiaFinal = "";
+// Elementos da página
+const caixaInicio = document.querySelector('.caixa-inicio');
+const caixaConteudoQuiz = document.querySelector('.caixa-conteudo-quiz');
+const caixaPerguntas = document.querySelector('.caixa-perguntas');
+const caixaAlternativas = document.querySelector('.caixa-alternativas');
+const caixaResultado = document.querySelector('.caixa-resultado');
+const textoResultado = document.querySelector('.texto-resultado');
+const contadorElemento = document.getElementById('contador');
 
-function mostraPergunta() {
-    if(atual >= perguntas.length){
-        mostraResultado();
-        return;
+const btnIniciar = document.getElementById('btn-iniciar');
+const btnReiniciar = document.getElementById('btn-reiniciar');
+
+// Variáveis de controle
+let indiceAtual = 0;
+let pontuacao = 0;
+
+// Eventos de clique nos botões principais
+btnIniciar.addEventListener('click', iniciarQuiz);
+btnReiniciar.addEventListener('click', reiniciarQuiz);
+
+function iniciarQuiz() {
+    caixaInicio.classList.add('esconder');
+    caixaResultado.classList.add('esconder');
+    caixaConteudoQuiz.classList.remove('esconder');
+    
+    indiceAtual = 0;
+    pontuacao = 0;
+    mostrarPergunta();
+}
+
+function mostrarPergunta() {
+    // Limpa alternativas anteriores
+    caixaAlternativas.innerHTML = '';
+
+    const perguntaAtual = perguntas[indiceAtual];
+    
+    // Atualiza contador e título da pergunta
+    contadorElemento.textContent = `Pergunta ${indiceAtual + 1} de ${perguntas.length}`;
+    caixaPerguntas.textContent = perguntaAtual.pergunta;
+
+    // Criar botões para cada opção de resposta
+    perguntaAtual.alternativas.forEach((opcao, index) => {
+        const botao = document.createElement('button');
+        botao.classList.add('btn-opcao');
+        botao.textContent = opcao;
+        botao.addEventListener('click', () => selecionarResposta(index));
+        caixaAlternativas.appendChild(botao);
+    });
+}
+
+function selecionarResposta(indiceSelecionado) {
+    const perguntaAtual = perguntas[indiceAtual];
+
+    if (indiceSelecionado === perguntaAtual.correta) {
+        pontuacao++;
     }
-    perguntaAtual = perguntas[atual];
-    caixaPerguntas.textContent = perguntaAtual.enunciado;
-    caixaAlternativas.textContent = "";
-    mostraAlternativas();
-}
 
-function mostraAlternativas(){
-    for(const alternativa of perguntaAtual.alternativas){
-        const botaoAlternativas = document.createElement("button");
-        botaoAlternativas.textContent = alternativa.texto;
-        botaoAlternativas.addEventListener("click", () => respostaSelecionada(alternativa));
-        caixaAlternativas.appendChild(botaoAlternativas);
+    indiceAtual++;
+
+    if (indiceAtual < perguntas.length) {
+        mostrarPergunta();
+    } else {
+        exibirResultado();
     }
 }
 
-function respostaSelecionada(opcaoSelecionada){
-    const afirmacoes = opcaoSelecionada.afirmacao;
-    historiaFinal += afirmacoes + " ";
-    atual++;
-    mostraPergunta();
+function exibirResultado() {
+    caixaConteudoQuiz.classList.add('esconder');
+    caixaResultado.classList.remove('esconder');
+
+    const total = perguntas.length;
+    let mensagem = "";
+
+    if (pontuacao === total) {
+        mensagem = `Caramba, você é o Rei/Rainha do Milho! 👑🌽<br>Você acertou <strong>${pontuacao}</strong> de <strong>${total}</strong> perguntas!`;
+    } else if (pontuacao >= 3) {
+        mensagem = `Muito bom, cumpadre! 🔥<br>Você acertou <strong>${pontuacao}</strong> de <strong>${total}</strong> perguntas!`;
+    } else {
+        mensagem = `Eita! Precisa comer mais pamonha e estudar as tradições! 🪗<br>Você acertou <strong>${pontuacao}</strong> de <strong>${total}</strong> perguntas.`;
+    }
+
+    textoResultado.innerHTML = mensagem;
 }
 
-function mostraResultado(){
-    caixaPerguntas.textContent = "Em 2049...";
-    textoResultado.textContent = historiaFinal;
-    caixaAlternativas.textContent = ""; 
+function reiniciarQuiz() {
+    iniciarQuiz();
 }
-
-mostraPergunta();
